@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task Manager</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSS styles -->
+	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+</head>
+<body>
+	<!-- Header -->
+	<header>
+		<h1>Tasks Manager</h1>
+	</header>
+	<!-- Main content -->
+	<main>
+		<!-- add a newtask : title, description, due_date and submit button-->
+		<section>
+			<h2>Bienvenue ! Ajoutez une nouvelle tâche !</h2>
+			<form>
+				<label for="title">Title:</label>
+				<input type="text" id="title" name="title" required>
+
+				<label for="description">Description:</label>
+				<textarea id="description" name="description"></textarea>
+
+				<label for="due_date">Due date:</label>
+				<input type="date" id="due_date" name="due_date" required>
+
+				<button type="submit">Add</button>
+			</form>
+		</section>
+	</main>
+</body>
+</html>
