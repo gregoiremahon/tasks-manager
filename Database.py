@@ -42,12 +42,14 @@ def new_task():
         conn.close()
 
         # redirection vers la page d'accueil
-        return redirect('/')
+        print("New task added ! Titre : ", title)
+        return redirect('/new_task')
     else:
         return render_template('new_task.html')
 
 
 if __name__ == '__main__':
+
     # create database if it doesnt exist
     if not os.path.exists('tasks.db'):
         conn = sqlite3.connect('tasks.db')
@@ -60,5 +62,6 @@ if __name__ == '__main__':
                 completed INTEGER NOT NULL DEFAULT 0);''')
         conn.commit()
         conn.close()
+
     # localhost app
     app.run(port=5000, debug=False)
