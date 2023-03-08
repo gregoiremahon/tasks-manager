@@ -51,15 +51,19 @@
 									{% else %}
 										<span class="badge bg-danger">Non</span>
 									{% endif %}
+									
 								</td>
+								<td><button class="btn btn-danger" v-on:click="deleteTask(task)">-</button></td> 
 							</tr>
 							{% endif %}
+							
 						{% endfor %}
 					{% else %}
 						<tr>
 							<td colspan="4">Pas de tâches, souhaitez-vous en ajouter ?</td>
 						</tr>
 					{% endif %}
+					
 				</tbody>
 					
 			</table>	
