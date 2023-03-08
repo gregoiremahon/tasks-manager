@@ -4,27 +4,28 @@ import os
 
 app = Flask(__name__) # Flask app instanciation 
 
-@app.route('/tasks', methods=['GET']) # Route for GET request on webapp
+@app.route('/tasks', methods=['GET'])
 def get_all_tasks():
-    conn = sqlite3.connect('tasks.db') # Connect to SQLite3 database
+    conn = sqlite3.connect('tasks.db')
     cur = conn.cursor()
-    cur.execute("SELECT * FROM tasks") ## SELECT all lines in tasks database table
-    rows = cur.fetchall() # Gets all lines from previous query
+    cur.execute("SELECT * FROM tasks")
+    rows = cur.fetchall()
 
     tasks = []
     for row in rows:
-        task = {
-            'id': row[0],
-            'title': row[1],
-            'description': row[2],
-            'due_date': row[3],
-            'completed': bool(row[4])
-        }
-        tasks.append(task)
-
+        if row[4] == 0: # only if the task hasnt been completed yet
+            task = {
+                'id': row[0],
+                'title': row[1],
+                'description': row[2],
+                'due_date': row[3],
+                'completed': bool(row[4])
+            }
+            tasks.append(task)
+    print("tasks : ", tasks)
     conn.close()
-    #return jsonify(tasks) ## returns all tasks in json format
     return render_template('index.html', tasks=tasks)
+
 
 @app.route('/new_task', methods=['GET', 'POST']) # Route for GET/POST requests on new_task page
 def new_task():
