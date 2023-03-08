@@ -30,7 +30,8 @@
 		<!-- add a newtask : title, description, due_date and submit button-->
         <section class="mb-3">
             <h2>Bienvenue ! Ajoutez une nouvelle tâche !</h2>
-            <form>
+            <form action="/new_task" method="post">
+
                 <div class="form-group">
                     <label for="title" class="form-label mb-3">Title:</label>
                     <input type="text" class="form-control" id="title" name="title" required>

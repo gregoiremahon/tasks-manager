@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, redirect
 import sqlite3
 import os
 
@@ -25,6 +25,28 @@ def get_all_tasks():
     conn.close()
     #return jsonify(tasks) ## returns all tasks in json format
     return render_template('index.html', tasks=tasks)
+
+@app.route('/new_task', methods=['GET', 'POST']) # Route for GET/POST requests on new_task page
+def new_task():
+    if request.method == 'POST':
+        # récupération des données envoyées depuis le formulaire
+        title = request.form['title']
+        description = request.form['description']
+        due_date = request.form['due_date']
+
+        # insertion des données dans la base de données
+        conn = sqlite3.connect('tasks.db')
+        cur = conn.cursor()
+        cur.execute("INSERT INTO tasks (title, description, due_date) VALUES (?, ?, ?)", (title, description, due_date))
+        conn.commit()
+        conn.close()
+
+        # redirection vers la page d'accueil
+        return redirect('/')
+    else:
+        return render_template('new_task.html')
+
+
 if __name__ == '__main__':
     # create database if it doesnt exist
     if not os.path.exists('tasks.db'):
