@@ -2,6 +2,7 @@ const app = Vue.createApp({
   data() {
     return {
       tasks: [],
+      
       newTaskTitle: '',
       newTaskDescription: '',
       newTaskDueDate: '',
@@ -15,7 +16,7 @@ const app = Vue.createApp({
         console.log(this.tasks);
       })
       .catch(error => {
-        console.log(error);
+        console.log(this.tasks, error);
       });
   },
   methods: {
@@ -38,6 +39,7 @@ const app = Vue.createApp({
           console.log(error);
         });
     },
+  
     deleteTask(taskId) { // delete task from database when button is clicked
       const self = this;
       axios.get('/delete_task/' + taskId)
@@ -48,7 +50,18 @@ const app = Vue.createApp({
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
+
+    updateTask(task) {
+      axios.patch(`/update_task/${task.id}`, {completed: task.completed})
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   }
 });
+
 app.mount('#app');
