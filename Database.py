@@ -6,6 +6,10 @@ from flask_cors import CORS
 app = Flask(__name__) # Flask app instanciation 
 app.config.from_object(__name__)
 
+# enable CORS
+CORS(app, resources={r'/': {'origins': '*'}})
+
+
 # Redirect
 
 @app.route('/')
@@ -20,9 +24,8 @@ def get_all_tasks():
     rows = cur.fetchall()
     tasks = []
     for row in rows:
-        print("task is defined.")
         task = {
-            'task_id': row[0],
+            'id': row[0],
             'title': row[1],
             'description': row[2],
             'due_date': row[3],
@@ -30,8 +33,7 @@ def get_all_tasks():
             }
         tasks.append(task)
     conn.close()
-    print("tasks : ", tasks)
-    return render_template('index.html', tasks = tasks)
+    return render_template('index.html', tasks=tasks)
 
 @app.route('/new_task', methods=['GET', 'POST'])
 def new_task():
@@ -50,18 +52,16 @@ def new_task():
 
 
 
-@app.route('/delete_task/<int:task_id>', methods=['GET'])
-
+@app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
-
     conn = sqlite3.connect('tasks.db')
     cur = conn.cursor()
-    cur.execute("DELETE FROM tasks WHERE id=?", (task_id,)) # delete task from id when delete_task toggled
+    cur.execute("DELETE FROM tasks WHERE id=?", (task_id,))
     conn.commit()
     conn.close()
     print("Task id:", task_id, "deleted!")
+    return ('', 204)
 
-    return redirect('/tasks')
 
 
 if __name__ == '__main__':

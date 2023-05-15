@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-	<!-- CSS styles -->
-	
-	<div class="dropdown" data-bs-theme="light"></div>
+	<!-- CSS styles & sources -->
+	<link rel="stylesheet" type="text/css" href="../css/styles.css">
+	<link rel="stylesheet" type="text/css" href="templates/tasks-manager-styles.css">
+	<script src="static/js/script.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 	<title><a href="/tasks">Task Manager</a></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	
+	<div id="app"> 
 		<!-- Header -->
 		<header class="mb-3">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,57 +37,48 @@
 			  </nav>
 		</header>
 
-		<div id="app">
+		
 
 		<!-- tasks list -->
 		<main>
 			
 			<h1 class="display-4">Liste des tâches </h1>
-			<table class="table">
-				<thead>
-				  <tr>
-					<th>Titre</th>
-					<th>Description</th>
-					<th>Date d'échéance</th>
-					<th>Complétée</th>
-					<th>Supprimer cette tache</th>
+			<hr><br><br>
+			
+			<table class="table table-hover">
+			  <thead>
+				<tr>
+					<th scope="col">Title</th>
+					<th scope="col">Description</th>
+					<th scope="col">Due Date</th>
+					<th scope="col">Status</th>
+					<th></th>
 				  </tr>
 				</thead>
 				<tbody>
-				  {% if tasks %}
-					{% for task in tasks %}
-					  {% if not task.completed %}
-					  <tr class="table-info">
-						<td>{{ task.title }}</td>
-						<td>{{ task.description }}</td>
-						<td>{{ task.due_date }}</td>
-						<td>
-						  {% if task.completed %}
-						  <span class="badge bg-success">Oui</span>
-						  {% else %}
-						  <span class="badge bg-danger">Non</span>
-						  {% endif %}
-						</td>
-						<td><button class="btn btn-danger" :@click="deleteTask(task)">-</button></td> 
-					  </tr>
-					  {% endif %}
-					{% endfor %}
-				  {% else %}
-				  <tr>
-					<td colspan="5">Pas de tâches, souhaitez-vous en ajouter ?</td>
-				  </tr>
-				  {% endif %}
-				</tbody>
+					<div v-if="tasks">
+					<tr v-for="task in tasks" :key="task.task_id">
+
+					  <td>{{ task.title }}</td>
+					  <td>{{ task.description }}</td>
+					  <td>{{ task.due_date }}</td>
+					  <td>
+						<span v-if="task.completed" class="badge bg-success">completed</span>
+						<span v-else class="badge bg-danger">not completed yet</span>
+					  </td>
+					  <td>
+						<div class="btn-group" role="group">
+						  <button type="button" class="btn btn-warning btn-sm">Update</button>
+						  <button type="button" class="btn btn-danger btn-sm">Delete</button>
+						</div>
+					</div>
+					  </td>
+					</tr>
+				  </tbody>
 			  </table>
 		</main>
-	</div>	
+	</div>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 	
-	<link rel="stylesheet" type="text/css" href="../css/styles.css">
-	<link rel="stylesheet" type="text/css" href="templates/tasks-manager-styles.css">
-	<script src="static/js/script.js"></script>
 </body>
 </html>

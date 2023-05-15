@@ -1,12 +1,7 @@
 const app = Vue.createApp({
   data() {
     return {
-      tasks: [],
-      
-      newTaskTitle: '',
-      newTaskDescription: '',
-      newTaskDueDate: '',
-      completed: 0,
+      tasks: []
     }
   },
   mounted() {
@@ -16,7 +11,7 @@ const app = Vue.createApp({
         console.log(this.tasks);
       })
       .catch(error => {
-        console.log(this.tasks, error);
+        console.log(error);
       });
   },
   methods: {
@@ -40,17 +35,21 @@ const app = Vue.createApp({
         });
     },
   
-    deleteTask(taskId) { // delete task from database when button is clicked
-      const self = this;
-      axios.get('/delete_task/' + taskId)
-        .then(function(response) {
-          self.tasks = self.tasks.filter(task => task.id !== taskId);
-          console.log("Task deleted!");
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+    deleteTask(event) {
+      const taskId = event.target.dataset.taskId.replace('data-task-id-', '');
+      const task_to_delete = `http://localhost:5000/tasks/${taskId}`;
+      axios.delete(task_to_delete)
+      .then(response => {
+        this.tasks = this.tasks.filter(task => task.id !== taskId);
+      })
+      .catch(error => {
+        console.error("DELETE TASK ERROR", taskId);
+      });
     },
+    
+  
+    
+    
 
     updateTask(task) {
       axios.patch(`/update_task/${task.id}`, {completed: task.completed})
